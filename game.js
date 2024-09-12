@@ -4,28 +4,41 @@ const buttonColors = ["red", "blue", "green", "yellow"];
 // Empty Array for game pattern
 const gamePattern = [];
 
-let randomChosenColor;
+let randomChosenColor; // Declare globally 
 
 // Function to select a random color (same length as array), store it and add (push) it to the game pattern array
 function nextSequence() {
     let randomNumber = Math.floor(Math.random() * buttonColors.length);
-    const randomChosenColor = buttonColors[randomNumber];
+    randomChosenColor = buttonColors[randomNumber];
     gamePattern.push(randomChosenColor);
+
+    // Animate a "flash" on button that matches randomChosenColor
+    $("#" + randomChosenColor).fadeOut(50).fadeIn(50);
+
+    // Play sound of selected button
+    playSound(randomChosenColor);
+
+    console.log("Game Pattern: ", gamePattern); // for debugging
 }
 
-nextSequence();
-console.log(gamePattern);
+// Function to play sound
+function playSound(name) {
+    let audio = new Audio("sounds/" + name + ".mp3");
+    audio.play().catch(function(error) {
+        console.log("Audio failed to play: ", error);
+    });
+}
 
-
-// # + gamePattern = btn red(or any color chosen in the 
-//nextSequence function, onclick then added with a function to 
-//fadein and fade out to "flash" the element)
-$("#" + gamePattern).on("click", function() {
-    $("#" + gamePattern).fadeOut(50).fadeIn(50);
+// Start the game and user interact with page
+$(document).on("keypress", function() {
+    nextSequence();
 });
 
-// $("#" + gamePattern).click(function(event){
-//     alert("a yellow button was clicked");
+// // Animate "on click" event
+// $("#" + gamePattern).on("click", function() {
+//     $("#" + gamePattern).fadeOut(50).fadeIn(50);
 // });
 
-// fade toggle for button click event
+// // Play sound of button selected
+// let audio = new Audio("sounds/" + randomChosenColor + ".mp3");
+// audio.play();
